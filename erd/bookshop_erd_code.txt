@@ -1,0 +1,48 @@
+Table publisher {
+  publisher_id varchar [pk, note: "出版社ID"]
+  publisher_name varchar [note: "出版社名稱"]
+  contact varchar [note: "聯絡人"]
+  phone varchar [note: "電話"]
+  create_time datetime [note: "建立時間"]
+}
+
+Table book {
+  isbn varchar [pk, note: "書籍ISBN"]
+  book_name varchar [note: "書名"]
+  price decimal [note: "定價"]
+  author varchar [note: "作者"]
+  publication_date date [note: "出版日期"]
+  publisher_id varchar [note: "出版社ID"]
+}
+
+Table customer {
+  customer_id varchar [pk, note: "顧客ID"]
+  customer_name varchar [note: "顧客姓名"]
+  phone varchar [note: "電話"]
+  address varchar [note: "地址"]
+}
+
+Table order_master {
+  order_id varchar [pk, note: "訂單ID"]
+  customer_id varchar [note: "顧客ID"]
+  order_date date [note: "下單日期"]
+}
+
+Table order_detail {
+  order_id varchar [pk, note: "訂單ID"]
+  isbn varchar [pk, note: "書籍ISBN"]
+  quantity int [note: "購買數量"]
+}
+
+Table purchase {
+  purchase_id varchar [pk, note: "進貨單ID"]
+  isbn varchar [note: "書籍ISBN"]
+  quantity int [note: "進貨數量"]
+  purchase_date date [note: "進貨日期"]
+}
+
+Ref: book.publisher_id > publisher.publisher_id
+Ref: order_master.customer_id > customer.customer_id
+Ref: order_detail.order_id > order_master.order_id
+Ref: order_detail.isbn > book.isbn
+Ref: purchase.isbn > book.isbn
